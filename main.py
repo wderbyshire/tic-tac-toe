@@ -21,7 +21,7 @@ def collect_coords(board):
             valid_coord = False
         # Format check
         elif coord_choice[1] != ",":
-            print("Invalid coordinate: Please type the coord in the format row,column")
+            print("Format error: Please type the coord in the format row,column")
             valid_coord = False
         # Type check
         elif not coord_choice[0].isnumeric() or not coord_choice[2].isnumeric():
