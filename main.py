@@ -1,49 +1,51 @@
+from types import coroutine
+
 
 def collect_coords(board):
-    # This function collects coordinates in the form [row, col], validates that they are appropriate and returns them
-
+    # This function collects coordinates in the form "row,col", validates that they are appropriate and returns them as
+     # a list of integers in the form [row, col]
 
     valid_coord = False
     while not valid_coord:
         valid_coord = True
-        # Collect and validate row choice
-        valid_row = False
-        while not valid_row:
-            valid_row = True
-            row_choice = input("Please select a row")
 
-            if not row_choice.isnumeric():
-                print("Please type the row as a number")
-                valid_row = False
-            else:
-                row_choice = int(row_choice)
+        coord_choice = input("Please select the coordinate you'd like to draw in")
 
-                if row_choice < 0 or row_choice > 2:
-                    print("Please type a valid row between 0 and 2")
-                    valid_row = False
-
-        # Collect and validate column choice
-        valid_col = False
-        while not valid_col:
-            valid_col = True
-            col_choice = input("Please select a column")
-
-            if not col_choice.isnumeric():
-                print("Please type the column as a number")
-                valid_col = False
-            else:
-                col_choice = int(col_choice)
-
-                if col_choice < 0 or col_choice > 2:
-                    print("Please type a valid column between 0 and 2")
-                    valid_col = False
-
-        # Check if chosen coordinates is empty
-        if board[row_choice][col_choice] != "":
-            print("That space is occupied, please select a different column")
+        # Presence check
+        if len(coord_choice) == 0:
+            print("Presence Error: You must type an answer to proceed")
             valid_coord = False
+        # Length check
+        elif len(coord_choice) > 3:
+            print("Length Error: Please type a valid coord that is only three characters long in the form row,column")
+            valid_coord = False
+        # Format check
+        elif coord_choice[1] != ",":
+            print("Invalid coordinate: Please type the coord in the format row,column")
+            valid_coord = False
+        # Type check
+        elif not coord_choice[0].isnumeric() or not coord_choice[2].isnumeric():
+            print("Type Error: Please ensure your row and columns are provided as numbers")
+            valid_coord = False
+        # Range check for row
+        elif int(coord_choice[0]) < 0 or int(coord_choice[0]) > 2:
+            print("Row Range Error: Please ensure your row choice is between 0 and 2")
+            valid_coord = False
+        # Range check for column
+        elif int(coord_choice[2]) < 0 or int(coord_choice[2]) > 2:
+            print("Column Range Error: Please ensure your column choice is between 0 and 2")
+            valid_coord = False
+        else:
+            row_choice = int(coord_choice[0])
+            col_choice = int(coord_choice[2])
 
-    return [row_choice, col_choice]
+            # Check that space isn't already occupied
+            if board[row_choice][col_choice] != "":
+                print("That space is already occupied, please select a different coordinate")
+                valid_coord = False
+            else:
+                return [row_choice, col_choice]
+
 
 def player_turn(player_name, player_symbol, board):
     # This function runs a players turn, collecting the coordinate they'd like to play, and then checking whether the
